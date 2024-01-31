@@ -1,7 +1,5 @@
 import json
 import smtplib
-import ssl
-import threading
 from email.mime.text import MIMEText
 
 import requests as requests
