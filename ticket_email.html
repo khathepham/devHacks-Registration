@@ -1,0 +1,40 @@
+<html lang="en">
+<head>
+    <style>
+        {styles}
+    </style>
+    <title>.devHacks Ticket</title>
+
+</head>
+<body>
+    <p>Hey there {preferred_name}!</p>
+    <p>Here are your tickets to .devHacks! Please save this, as we will be checking you in with this.</p>
+    <p>In addition, hop into the <a href="https://discord.gg/M64pTrDxPU">.devHacks 2024 Discord.</a></p>
+    <p>You'll be able to register as a team closer to the event. Teams will consist of 5 or fewer people.</p>
+    <p>See you soon!<br>
+        .devClub Team
+    </p>
+    <div id="ticket-box">
+        <h1>.devHacks Admission</h1>
+        <div id="barcode_images">
+            <img src="{ticket_qr}"
+            alt="Ticket QR Code">
+        </div>
+        <div class="info_box">
+            <h2>Ticket Code</h2>
+            <div id="ticket-code">{ticket_code}</div>
+        </div>
+        <div class="info_box">
+            <h2>Ticket Type</h2>
+            <div class="other-info">{ticket_type}</div>
+        </div>
+        <div class="info_box">
+        <h2>Event</h2>
+            <div class="other-info">.devHacks 2024</div>
+            <div>Fri Feb 23 - Fri Feb 24, 2024</div>
+            <div>University of Manitoba</div>
+            <div>EITC Atrium, E3-229</div>
+        </div>
+    </div>
+</body>
+</html>
