@@ -1,3 +1,6 @@
+import segno
+
+
 class Attendee:
     def __init__(self, first_name=None, last_name=None, preferred_name=None, email=None,
                  phone_number=None, obj=None, ticket_id=None, school_email=None):
@@ -30,3 +33,6 @@ class Attendee:
         self.email = obj.get("email")
         self.phone_number = obj.get("phone_number")
         self.discord_name = obj.get("discord_name")
+
+    def ticket_qr(self):
+        return segno.make_qr(self.ticket_id)

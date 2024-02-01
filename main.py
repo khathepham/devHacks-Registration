@@ -1,12 +1,18 @@
 import json
+import os
 import smtplib
 import sys
 import traceback
 from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.mime.application import MIMEApplication
+from email.mime.image import MIMEImage
+
+from os.path import basename
 
 import requests as requests
 import segno
-from flask import Flask, request, Response, url_for
+from flask import Flask, request, Response, url_for, render_template
 from attendee import Attendee
 
 app = Flask(__name__)
@@ -62,7 +68,10 @@ def create_and_send_ticket(full_form_data):
 @app.route('/register-devhacks-2024/<ticket_id>', methods=["GET"])
 def qr_code(ticket_id):
     qr = segno.make_qr(ticket_id)
-    return Response(qr.svg_inline(scale=5), mimetype='image/svg')
+    qr.save(f"{ticket_id}.png", scale=4)
+    with open(f"{ticket_id}.png", "rb") as fil:
+        bits = fil.read()
+    return Response(bits, mimetype='image/png')
 
 
 def send_to_discord(attendee):
@@ -75,7 +84,7 @@ def send_to_discord(attendee):
             "content": f"{attendee.first_name} {attendee.last_name} has registered!\n"
                        f"Email: `{attendee.email}`\n"
                        f"Ticket Number: `{attendee.ticket_id}`\n"
-                       f"Ticket Barcode: [link](https://devhacks2024.khathepham.com/{url_for('qr_code', ticket_id=attendee.ticket_id)})"
+                       f"Ticket Barcode: [link](https://devhacks2024.khathepham.com/{url_for('qr_code', ticket_id=attendee.ticket_id)}.png)"
         }
     else:
         body = {
@@ -91,21 +100,26 @@ def send_email(attendee):
     s.starttls()
     s.login('umdevclub@gmail.com', env.get("gmail_pass"))
 
-    content = open("styles/ticket_email.html", "r").read()
-    content = content.format(
-        styles=open("styles/styles.css", 'r').read(),
-        preferred_name=attendee.preferred_name if attendee.preferred_name else attendee.first_name,
-        ticket_qr=f"https://devhacks2024.khathepham.com/{url_for('qr_code', ticket_id=attendee.ticket_id)}",
-        ticket_type="General Admission",
-        ticket_code=attendee.ticket_id
-    )
+    with open("./static/styles/style.css", "r") as fil:
+        css = fil.read()
 
-    message = MIMEText(content, 'html')
-    message["Subject"] = ".devHacks 2024 Ticket"
+    content = render_template("email.html", attendee=attendee, css=css)
+
+    message = MIMEMultipart()
+    message.attach(MIMEText(content, 'html'))
+    message["Subject"] = f".devHacks 2024 Ticket - {attendee.ticket_id}"
     message["From"] = "umdevclub@gmail.com"
     message["To"] = attendee.email
 
+    qr = attendee.ticket_qr()
+    qr.save(f"{attendee.ticket_id}.png", scale=6)
+
+    with open(f"{attendee.ticket_id}.png", 'rb') as fil:
+        image = MIMEImage(fil.read(), Name=os.path.basename(f"{attendee.ticket_id}.png"))
+    image.add_header('Content-ID', attendee.ticket_id)
+    message.attach(image)
     s.sendmail("umdevclub@gmail.com", attendee.email, message.as_string())
+    os.remove(os.path.basename(f"{attendee.ticket_id}.png"))
 
 
 if __name__ == '__main__':
