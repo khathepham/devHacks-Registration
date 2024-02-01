@@ -7,6 +7,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
 from email.mime.image import MIMEImage
+import io
 
 from os.path import basename
 
@@ -68,10 +69,9 @@ def create_and_send_ticket(full_form_data):
 @app.route('/register-devhacks-2024/<ticket_id>', methods=["GET"])
 def qr_code(ticket_id):
     qr = segno.make_qr(ticket_id)
-    qr.save(f"{ticket_id}.png", scale=4)
-    with open(f"{ticket_id}.png", "rb") as fil:
-        bits = fil.read()
-    return Response(bits, mimetype='image/png')
+    b = io.BytesIO()
+    qr.save(b, kind="png", scale=4)
+    return Response(b.read(), mimetype='image/png')
 
 
 def send_to_discord(attendee):
@@ -112,14 +112,13 @@ def send_email(attendee):
     message["To"] = attendee.email
 
     qr = attendee.ticket_qr()
-    qr.save(f"{attendee.ticket_id}.png", scale=6)
+    b = io.BytesIO()
+    qr.save(b, kind="png", scale=6)
 
-    with open(f"{attendee.ticket_id}.png", 'rb') as fil:
-        image = MIMEImage(fil.read(), Name=os.path.basename(f"{attendee.ticket_id}.png"))
+    image = MIMEImage(b.getvalue(), Name=f"{attendee.ticket_id}.png", _subtype="png")
     image.add_header('Content-ID', attendee.ticket_id)
     message.attach(image)
     s.sendmail("umdevclub@gmail.com", attendee.email, message.as_string())
-    os.remove(os.path.basename(f"{attendee.ticket_id}.png"))
 
 
 if __name__ == '__main__':
