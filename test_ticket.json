@@ -1,26 +1,264 @@
 {
-    "object": "issued_ticket",
-    "id": "it_58861526",
-    "add_on_id": null,
-    "barcode": "eH2gXG3",
-    "barcode_url": "https://cdn.tickettailor.com/userfiles/cache/barcode/st/attendee/58861526/24bc8dc6967002590e37.jpg",
-    "checked_in": "false",
-    "created_at": 1706683216,
-    "custom_questions": [],
-    "description": "General Admission",
-    "email": "khathepham@gmail.com",
-    "event_id": "ev_3072005",
-    "first_name": "Test",
-    "full_name": "Test User",
-    "group_ticket_barcode": null,
-    "last_name": "User",
-    "order_id": null,
-    "qr_code_url": "https://cdn.tickettailor.com/userfiles/cache/barcode/qr/attendee/58861526/24bc8dc6967002590e37.png",
-    "reference": null,
-    "reservation": null,
-    "source": "api",
-    "status": "valid",
-    "ticket_type_id": "tt_3569189",
-    "updated_at": "false",
-    "voided_at": null
+  "eventId": "1cda7f62-0cf7-4411-818b-7f190db253b7",
+  "createdAt": "2024-01-31T10:16:46.446Z",
+  "data": {
+    "responseId": "9vL50X",
+    "submissionId": "9vL50X",
+    "respondentId": "2ebL2A",
+    "formId": "meRpLq",
+    "formName": ".devHacks Registration",
+    "createdAt": "2024-01-30T21:25:08.000Z",
+    "fields": [
+      {
+        "key": "question_M1KDll",
+        "label": "What is your first name?",
+        "type": "INPUT_TEXT",
+        "value": "Avneet"
+      },
+      {
+        "key": "question_J1Kdbr",
+        "label": "And your last name?",
+        "type": "INPUT_TEXT",
+        "value": "Sidhu"
+      },
+      {
+        "key": "question_J1KkJo",
+        "label": "What's your preferred name?",
+        "type": "INPUT_TEXT",
+        "value": "Avi"
+      },
+      {
+        "key": "question_bZVv1e",
+        "label": "What's your school email?",
+        "type": "INPUT_EMAIL",
+        "value": null
+      },
+      {
+        "key": "question_ArPyMB",
+        "label": "What's your Preferred Email?",
+        "type": "CHECKBOXES",
+        "value": null,
+        "options": [
+          {
+            "id": "a9b65551-1488-4744-8d0a-23cac002c22f",
+            "text": "It's the same as my school email."
+          }
+        ]
+      },
+      {
+        "key": "question_ArPyMB_a9b65551-1488-4744-8d0a-23cac002c22f",
+        "label": "What's your Preferred Email? (It's the same as my school email.)",
+        "type": "CHECKBOXES",
+        "value": null
+      },
+      {
+        "key": "question_gbjeXP",
+        "label": "taijiri.satoshi@ashketchum.pok",
+        "type": "INPUT_EMAIL",
+        "value": "sidhua8@myumanitoba.ca"
+      },
+      {
+        "key": "question_yXZNr8",
+        "label": "What's your phone number?",
+        "type": "INPUT_PHONE_NUMBER",
+        "value": "+4315545707"
+      },
+      {
+        "key": "question_X5lrdP",
+        "label": "What school do you attend?",
+        "type": "DROPDOWN",
+        "value": [
+          "f363a5ab-6c56-43a6-9f69-35ed9f78dc6f"
+        ],
+        "options": [
+          {
+            "id": "f363a5ab-6c56-43a6-9f69-35ed9f78dc6f",
+            "text": "University of Manitoba"
+          },
+          {
+            "id": "dc72e495-ba9f-413b-9fea-6c326633ac35",
+            "text": "International College of Manitoba"
+          },
+          {
+            "id": "23ce95e0-0240-41df-ba11-ef129504c43f",
+            "text": "University of Winnipeg"
+          },
+          {
+            "id": "eaa8af6d-d1b4-4a63-b0f9-e3285c91c350",
+            "text": "Red River College / Red River Polytechnic"
+          },
+          {
+            "id": "3980ace0-3b8b-40d1-8ed8-c94890412e9d",
+            "text": "Other"
+          }
+        ]
+      },
+      {
+        "key": "question_8NozVl",
+        "label": "School - Other",
+        "type": "INPUT_TEXT",
+        "value": null
+      },
+      {
+        "key": "question_0Vr7z9",
+        "label": "What year of study are you in?",
+        "type": "DROPDOWN",
+        "value": [
+          "87adc978-a1fb-4d63-8cab-05b7839a2d79"
+        ],
+        "options": [
+          {
+            "id": "d353c65b-4361-46bd-a3cc-025dd232b11f",
+            "text": "High School"
+          },
+          {
+            "id": "0e2ba632-f768-4fc7-9e0f-1d3f2bd81506",
+            "text": "1st Year Undergrad"
+          },
+          {
+            "id": "ea208b98-9750-47ae-9f78-998ec9de3822",
+            "text": "2nd Year Undergrad"
+          },
+          {
+            "id": "ccbee66f-83d8-4a37-b42b-d1ffe2247d78",
+            "text": "3rd Year Undergrad"
+          },
+          {
+            "id": "87adc978-a1fb-4d63-8cab-05b7839a2d79",
+            "text": "4th Year Undergrad"
+          },
+          {
+            "id": "2706bb0c-998f-48b8-aa5d-f3cd4f9919ab",
+            "text": "5th+ Year Undergrad"
+          },
+          {
+            "id": "324f1d4e-3716-461b-8881-9f2b73a1a0db",
+            "text": "Graduate Studies"
+          },
+          {
+            "id": "6088f65b-e611-4141-87f7-97bce675cffd",
+            "text": "Other"
+          },
+          {
+            "id": "5eb36e07-25f8-4113-8f85-f001d6768054",
+            "text": "I'm not a Student"
+          },
+          {
+            "id": "f673bf19-8938-4ef1-825c-8dbea9449ccc",
+            "text": "I'd prefer not to answer"
+          }
+        ]
+      },
+      {
+        "key": "question_zEXN4k",
+        "label": "Year of Study - Other",
+        "type": "INPUT_TEXT",
+        "value": null
+      },
+      {
+        "key": "question_5XK4oN",
+        "label": "What are you currently studying?",
+        "type": "DROPDOWN",
+        "value": [
+          "88dd9618-134a-4eb9-a7b1-7f6fb9bb11d3"
+        ],
+        "options": [
+          {
+            "id": "88dd9618-134a-4eb9-a7b1-7f6fb9bb11d3",
+            "text": "Computer Science"
+          },
+          {
+            "id": "074d515e-a0bf-4e8b-a0f7-4394a7348396",
+            "text": "Computer Engineering"
+          },
+          {
+            "id": "2f7a6190-93f5-415f-b4fe-2628a5ad5f9c",
+            "text": "N/A"
+          },
+          {
+            "id": "7539c2e4-b12a-48e3-bdce-4104f92d550f",
+            "text": "Other"
+          }
+        ]
+      },
+      {
+        "key": "question_dbqNXr",
+        "label": "Subject of Study - Other",
+        "type": "INPUT_TEXT",
+        "value": null
+      },
+      {
+        "key": "question_YjDRXN",
+        "label": "What are your dietary restrictions?",
+        "type": "MULTI_SELECT",
+        "value": [
+          "c57daefe-ce8e-4dff-ad99-1656160d6f23"
+        ],
+        "options": [
+          {
+            "id": "d415524b-6427-4c4f-8371-e332f734069d",
+            "text": "None"
+          },
+          {
+            "id": "c57daefe-ce8e-4dff-ad99-1656160d6f23",
+            "text": "Vegetarian"
+          },
+          {
+            "id": "e94cafde-a0ea-4705-99c0-e44eb3c53227",
+            "text": "Vegan"
+          },
+          {
+            "id": "400b4f9c-a48c-4f5e-8ff9-2275631a4c92",
+            "text": "Celiac"
+          },
+          {
+            "id": "18e2f3ca-d5f9-434b-b562-651780c1d647",
+            "text": "Halal"
+          },
+          {
+            "id": "7dd3f397-89ab-4fff-9cdd-6536fd670936",
+            "text": "Kosher"
+          },
+          {
+            "id": "d2b88643-871b-459b-bde5-da0a0752b025",
+            "text": "Allergies"
+          },
+          {
+            "id": "bf15fa62-5f04-49f0-abed-8df2a76fae37",
+            "text": "Other"
+          }
+        ]
+      },
+      {
+        "key": "question_Dq2K9l",
+        "label": "Dietary Restrictions: Allergies/Other",
+        "type": "INPUT_TEXT",
+        "value": null
+      },
+      {
+        "key": "question_laDqXo",
+        "label": "What's your github account?",
+        "type": "INPUT_TEXT",
+        "value": null
+      },
+      {
+        "key": "question_RWKdQK",
+        "label": "What's your LinkedIn?",
+        "type": "INPUT_TEXT",
+        "value": null
+      },
+      {
+        "key": "question_o96DZb",
+        "label": "Got a Resume or CV to Submit?",
+        "type": "FILE_UPLOAD",
+        "value": null
+      },
+      {
+        "key": "question_7XlJva",
+        "label": "Any additional comments, questions, or concerns?",
+        "type": "TEXTAREA",
+        "value": null
+      }
+    ]
+  }
 }
