@@ -1,0 +1,14 @@
+{
+  "name": "static",
+  "version": "1.0.0",
+  "description": ".devHacks Checkin",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bower": "^1.8.14"
+  }
+}
