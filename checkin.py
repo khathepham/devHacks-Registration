@@ -22,7 +22,7 @@ def checkin(ticket_id):
         if not checked_in:
             while rate_limited:
                 notion_auth = env["notion_pass"]
-                completed_process = subprocess.run(["node", "../test.js", notion_auth, ticket["id"]],
+                completed_process = subprocess.run(["node", "../checkinticket.js", notion_auth, ticket["id"]],
                                                    capture_output=True)
                 r = completed_process.stdout.decode()
                 r = json.loads(r)

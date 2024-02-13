@@ -2,7 +2,7 @@
   "name": "devhacks-registration",
   "version": "1.0.0",
   "description": "",
-  "main": "test.js",
+  "main": "checkinticket.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -12,6 +12,9 @@
   },
   "private": true,
   "dependencies": {
-    "@notionhq/client": "^2.2.14"
-  }
+    "@notionhq/client": "^2.2.14",
+    "node-fetch": "^3.3.2",
+    "xmlhttprequest": "^1.8.0"
+  },
+  "type": "module"
 }
