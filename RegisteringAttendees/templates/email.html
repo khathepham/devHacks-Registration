@@ -28,7 +28,8 @@
     </style>
 </head>
 <body>
-    <p>Hey there {{attendee.preferred_name}}!</p>
+    <p>Hey there, {{attendee.preferred_name if attendee.preferred_name else attendee.first_name }}!</p>
+    <br>
     <p>Here are your tickets to .devHacks! Please save this, as we will be checking you in with this.</p>
     <p>In addition, hop into the <a href="https://discord.gg/M64pTrDxPU">.devHacks 2024 Discord.</a></p>
     <p>You'll be able to register as a team closer to the event. Teams will consist of 5 or fewer people.</p>
@@ -48,6 +49,10 @@
         <div class="info_box">
             <h2>Ticket Type</h2>
             <div class="other-info">General Admission</div>
+        </div>
+        <div class="info_box">
+            <h2>Attendee Name</h2>
+            <div class="other-info">{{ attendee.first_name }} {{ attendee.last_name }}</div>
         </div>
         <div class="info_box">
         <h2>Event</h2>

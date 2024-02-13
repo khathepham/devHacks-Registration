@@ -8,6 +8,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
 from email.mime.image import MIMEImage
 import io
+import jinja2
 
 from os.path import basename
 
@@ -49,7 +50,7 @@ def create_and_send_ticket(full_form_data):
         if questions[4]["value"]:
             attendee.email = attendee.school_email
         else:
-            attendee.email = questions[5]["value"]
+            attendee.email = questions[6]["value"]
 
         # Create Ticket
         send_to_discord(attendee)
@@ -70,8 +71,40 @@ def create_and_send_ticket(full_form_data):
 def qr_code(ticket_id):
     qr = segno.make_qr(ticket_id)
     b = io.BytesIO()
-    qr.save(b, kind="png", scale=4)
-    return Response(b.read(), mimetype='image/png')
+    qr.save(b, kind="png", scale=6)
+    return Response(b.getvalue(), mimetype='image/png')
+
+
+@app.route('/register-devhacks-2024/resend_email/<notion_page_id>', methods=["POST"])
+def resend_email(notion_page_id):
+    notion_auth = env.get("notion_pass")
+    url = f"https://api.notion.com/v1/pages/{notion_page_id}"
+    header = {
+        "Authorization": f"Bearer {notion_auth}",
+        "Notion-Version": "2022-06-28"
+    }
+    r = requests.get(url, headers=header)
+    print(json.dumps(r.json(), indent=4))
+    if r.status_code == 404:
+        return "404 ID Not Found", 404
+    elif r.status_code == 400 or r.status_code == 429:
+        return "429 Rate Limited"
+    else:
+        info = r.json().get("properties")
+        attendee = Attendee()
+        attendee.first_name = info.get("First Name").get("rich_text")[0].get("plain_text")
+        attendee.last_name = info.get("Last Name").get("rich_text")[0].get("plain_text")
+        attendee.ticket_id = info.get("Ticket ID").get("title")[0].get("plain_text")
+        attendee.school_email = info.get("School Email").get("email")
+        attendee.email = info.get("Preferred Email").get("email")
+        if not attendee.email:
+            attendee.email = attendee.school_email
+        preferred_name = info.get("Preferred Name").get("rich_text", [])
+        preferred_name = None if len(preferred_name) == 0 else preferred_name[0].get("plain_text")
+        attendee.preferred_name = preferred_name;
+
+        send_email(attendee)
+        return "Successfully Sent Email", 200
 
 
 def send_to_discord(attendee):
@@ -84,7 +117,7 @@ def send_to_discord(attendee):
             "content": f"{attendee.first_name} {attendee.last_name} has registered!\n"
                        f"Email: `{attendee.email}`\n"
                        f"Ticket Number: `{attendee.ticket_id}`\n"
-                       f"Ticket Barcode: [link](https://devhacks2024.khathepham.com/{url_for('qr_code', ticket_id=attendee.ticket_id)}.png)"
+                       f"Ticket Barcode: [link](https://devhacks2024.khathepham.com{url_for('qr_code', ticket_id=attendee.ticket_id)}.png)"
         }
     else:
         body = {
@@ -100,10 +133,13 @@ def send_email(attendee):
     s.starttls()
     s.login('umdevclub@gmail.com', env.get("gmail_pass"))
 
-    with open("./static/styles/style.css", "r") as fil:
+    with open("static/styles/style.css", "r") as fil:
         css = fil.read()
 
-    content = render_template("email.html", attendee=attendee, css=css)
+    with open("templates/email.html", 'r') as f:
+        text = f.read()
+        template = jinja2.Template(text)
+    content = template.render(attendee=attendee, css=css)
 
     message = MIMEMultipart()
     message.attach(MIMEText(content, 'html'))
@@ -126,3 +162,4 @@ if __name__ == '__main__':
     # ticket = json.load(open("./test_ticket.json", 'r'))
     # create_and_send_ticket(ticket)
     # send_email(att, info)
+    # resend_email("6ed8d453-ee3b-465d-99c7-06ccd9d14e9a")
