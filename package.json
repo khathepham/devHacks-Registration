@@ -2,7 +2,7 @@
   "name": "devhacks-registration",
   "version": "1.0.0",
   "description": "",
-  "main": "checkinticket.js",
+  "main": "RegisteringAttendees/checkinticket.cjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

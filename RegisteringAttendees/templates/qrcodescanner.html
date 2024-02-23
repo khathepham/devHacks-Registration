@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>.devHacks 2024 Registration Platform</title>
+    <script type="module" src="{{ url_for('static', filename='js/qrcodescanner.js') }}"></script>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+<body>
+    <div>
+        <h1 class="display-3 text-center">.devHacks Registration App</h1>
+        <hr class="mb-4">
+    </div>
+{#    <button type="button" class="btn btn-primary" id="liveToastBtn">Show live toast</button>#}
+    <div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3" id="toastContainer">
+    </div>
+
+    <div id="options" class="mb-4">
+        <div class="container-xl text-center">
+            <div class="btn-group" role="group" aria-label="Checkin Options">
+                <input type="radio" class="btn-check" name="checkin" id="FridayCheckin" autocomplete="off" checked>
+                <label class="btn btn-outline-primary" for="FridayCheckin">Friday Check-In</label>
+
+                <input type="radio" class="btn-check" name="checkin" id="SaturdayCheckin" autocomplete="off">
+                <label class="btn btn-outline-primary" for="SaturdayCheckin">Saturday Check-In</label>
+
+{#                <input type="radio" class="btn-check" name="checkin" id="NoCheckin" autocomplete="off">#}
+{#                <label class="btn btn-outline-primary" for="NoCheckin">Verify</label>#}
+            </div>
+        </div>
+    </div>
+    <div id="reader" class="container-xl align-items-stretch"></div>
+
+
+    <template id="toastTemplate">
+        <div class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="d-flex">
+            <div class="toast-body"></div>
+            <button type="button" class="btn-close me-2 m-auto btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+        </div>
+    </template>
+</body>
+</html>

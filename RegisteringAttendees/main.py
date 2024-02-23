@@ -9,6 +9,7 @@ from email.mime.application import MIMEApplication
 from email.mime.image import MIMEImage
 import io
 import jinja2
+from flask_cors import CORS
 
 from os.path import basename
 
@@ -16,10 +17,15 @@ import requests as requests
 import segno
 from flask import Flask, request, Response, url_for, render_template
 from attendee import Attendee
+import checkin
 
 app = Flask(__name__)
+CORS(app)
 env = json.load(open("env.json"))
 
+@app.route('/app')
+def qrcodescanner():
+    return render_template("qrcodescanner.html")
 
 @app.route('/')
 def hello_world():  # put application's code here
@@ -34,41 +40,8 @@ def register():
     return r
 
 
-def create_and_send_ticket(full_form_data):
-    try:
-
-        questions = full_form_data["data"]["fields"]  # Create QUestions
-
-        # Create User
-        attendee = Attendee()
-        attendee.first_name = questions[0]["value"]
-        attendee.last_name = questions[1]["value"]
-        attendee.preferred_name = questions[2]["value"]
-        attendee.school_email = questions[3]["value"]
-        attendee.ticket_id = full_form_data["data"]["responseId"]
-
-        if questions[4]["value"]:
-            attendee.email = attendee.school_email
-        else:
-            attendee.email = questions[6]["value"]
-
-        # Create Ticket
-        send_to_discord(attendee)
-
-        send_email(attendee)
-        return "Successfully Created Ticket", 201
-
-    except KeyboardInterrupt as k:
-        print("Ending the Program")
-        sys.exit(0)
-    except Exception as e:
-        print(e)
-        traceback.print_exception(e)
-        return "Something went Wrong", 503
-
-
 @app.route('/register-devhacks-2024/<ticket_id>', methods=["GET"])
-def qr_code(ticket_id):
+def qr_code(ticket_id: str):
     qr = segno.make_qr(ticket_id)
     b = io.BytesIO()
     qr.save(b, kind="png", scale=6)
@@ -107,6 +80,68 @@ def resend_email(notion_page_id):
         return "Successfully Sent Email", 200
 
 
+@app.route("/register-devhacks-2024/checkin", methods=["POST"])
+def checkinAttendee():
+    info = request.get_json()
+    ticket_code = info.get("ticketCode", None)
+    day = info.get("day", None)
+    try:
+        day_enum = checkin.Day(day)
+    except KeyError:
+        return "Invalid Day", 400
+
+    if not ticket_code and not day_enum:
+        return "Bad Request", 400
+    else:
+        statusjson = checkin.checkin(ticket_code, day_enum)
+        if not statusjson["success"]:
+            return statusjson["status"], 400
+        else:
+            return statusjson["status"], 200
+
+
+@app.route("/register-devhacks-2024/checkin/<ticket_code>", methods=["GET"])
+def getAttendee(ticket_code):
+    attendee = checkin.get_ticket(ticket_code)
+    if attendee:
+        return attendee
+    else:
+        return "Bad Request", 400
+
+
+def create_and_send_ticket(full_form_data):
+    try:
+
+        questions = full_form_data["data"]["fields"]  # Create QUestions
+
+        # Create User
+        attendee = Attendee()
+        attendee.first_name = questions[0]["value"]
+        attendee.last_name = questions[1]["value"]
+        attendee.preferred_name = questions[2]["value"]
+        attendee.school_email = questions[3]["value"]
+        attendee.ticket_id = full_form_data["data"]["responseId"]
+
+        if questions[4]["value"]:
+            attendee.email = attendee.school_email
+        else:
+            attendee.email = questions[6]["value"]
+
+        # Create Ticket
+        send_to_discord(attendee)
+
+        send_email(attendee)
+        return "Successfully Created Ticket", 201
+
+    except KeyboardInterrupt as k:
+        print("Ending the Program")
+        sys.exit(0)
+    except Exception as e:
+        print(e)
+        traceback.print_exception(e)
+        return "Something went Wrong", 503
+
+
 def send_to_discord(attendee):
     url = env.get("discord_webhook_url")
     header = {
@@ -117,7 +152,7 @@ def send_to_discord(attendee):
             "content": f"{attendee.first_name} {attendee.last_name} has registered!\n"
                        f"Email: `{attendee.email}`\n"
                        f"Ticket Number: `{attendee.ticket_id}`\n"
-                       f"Ticket Barcode: [link](https://devhacks2024.khathepham.com{url_for('qr_code', ticket_id=attendee.ticket_id)}.png)"
+                       f"Ticket Barcode: [link](https://devhacks2024.khathepham.com{url_for('qr_code', ticket_id=attendee.ticket_id)})"
         }
     else:
         body = {
@@ -158,7 +193,7 @@ def send_email(attendee):
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True, port=5001)
     # ticket = json.load(open("./test_ticket.json", 'r'))
     # create_and_send_ticket(ticket)
     # send_email(att, info)
