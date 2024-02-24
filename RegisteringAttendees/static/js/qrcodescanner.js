@@ -4,8 +4,8 @@
 // const {Html5QrcodeScanner} = require("html5-qrcode");
 let takingABreak = false;
 const BreakTime = 2; //seconds
-let day = "Friday"
-
+let day = "Saturday"
+let mode = "Standard"
 
 function onScanSuccess(decodedText, decodedResult) {
     // handle the scanned code as you like, for example:
@@ -53,7 +53,7 @@ const toastTrigger = document.getElementById('liveToastBtn')
 if (toastTrigger) {
     toastTrigger.addEventListener('click', () => {
 
-        checkinTicket("p7e9qB")
+        checkinTicket("AABBCC")
     })
 }
 
@@ -97,33 +97,57 @@ function createFailureToast(message){
     }
 }
 
-function deleteSelf(element){
-    element.remove()
+function createWarningToast(message){
+    if ("content" in document.createElement("template")) {
+        const toastContainer = document.getElementById("toastContainer");
+        const template = document.querySelector("#toastTemplate")
+
+        const clone = template.content.cloneNode(true);
+        let toastBody = clone.querySelector(".toast-body");
+        toastBody.textContent = message;
+        let toast = clone.querySelector(".toast");
+        toast.classList.add("text-bg-warning");
+
+        toastContainer.appendChild(clone)
+        const allToasts = toastContainer.querySelectorAll(".toast")
+        const newToast = allToasts[allToasts.length - 1]
+        let bsToast = bootstrap.Toast.getOrCreateInstance(newToast)
+        bsToast.show()
+        setTimeout(deleteSelf, 5000, newToast)
+    }
 }
 
-function makeid(length) {
-    let result = '';
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    const charactersLength = characters.length;
-    let counter = 0;
-    while (counter < length) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-      counter += 1;
-    }
-    return result;
+function deleteSelf(element){
+    element.remove()
 }
 
 function checkinTicket(ticketCode){
     const url = "https://devhacks2024.khathepham.com/register-devhacks-2024/checkin"
     const request = new XMLHttpRequest()
-
     const body = {ticketCode: ticketCode, day: day}
+
+    if (mode !== "Standard") {
+        body["meal"] = mode;
+        body["mealGroups"] = ["DR"]
+        if(AButton.checked){
+            body.mealGroups.push("A")
+        }
+        if(BButton.checked){
+            body.mealGroups.push("B")
+        }
+        if(CButton.checked){
+            body.mealGroups.push("C")
+        }
+    }
 
     request.open("POST", url, false);
     request.setRequestHeader("Content-Type", "application/json")
     request.onload = (e) => {
-        if (request.status >= 200 && request.status <= 299){
+        if (request.status >= 200 && request.status <= 249){
             createSuccessToast(request.responseText)
+        }
+        else if (request.status >= 250 && request.status <= 299){
+            createWarningToast(request.responseText)
         }
         else {
             createFailureToast(request.responseText)
@@ -151,3 +175,35 @@ if(saturdayButton){
         day = "Saturday"
     })
 }
+
+let standardButton = document.getElementById("Standard")
+let mealGroupsDiv = document.getElementById("mealGroups")
+if(standardButton){
+    standardButton.addEventListener('click', () => {
+        mealGroupsDiv.hidden = true;
+        mode = "Standard"
+    })
+}
+
+let lunchButton = document.getElementById("Lunch")
+let dinnerButton = document.getElementById("Dinner")
+
+if (lunchButton) {
+    lunchButton.addEventListener('click', () => {
+        mealGroupsDiv.hidden = false;
+        mode = "Lunch"
+    })
+}
+
+if (dinnerButton) {
+    dinnerButton.addEventListener('click', () => {
+        mealGroupsDiv.hidden = false;
+        mode = "Dinner"
+    })
+}
+
+let DRButton = document.getElementById("DietaryRestrictions")
+let AButton = document.getElementById("A")
+let BButton = document.getElementById("B")
+let CButton = document.getElementById("C")
+let mealGroupButtons = [DRButton, AButton, BButton, CButton]

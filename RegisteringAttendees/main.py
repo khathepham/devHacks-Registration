@@ -90,8 +90,26 @@ def checkinAttendee():
     except KeyError:
         return "Invalid Day", 400
 
+    meal = info.get("meal", None)
+    meal_enum = None
+    try:
+        if meal is not None:
+            meal_enum = checkin.Meal(meal)
+    except KeyError:
+        return "Invalid Meal", 400
+
     if not ticket_code and not day_enum:
         return "Bad Request", 400
+    elif meal_enum is not None and info.get("mealGroups", None) is None:
+        return "Bad Request", 400
+    elif meal_enum:
+        statusjson = checkin.meal_checkin(ticket_code, day_enum, meal_enum, info.get("mealGroups"))
+        if statusjson["success"]:
+            return statusjson["status"], 200
+        elif statusjson["warning"]:
+            return statusjson["status"], 250
+        else:
+            return statusjson["status"], 400
     else:
         statusjson = checkin.checkin(ticket_code, day_enum)
         if not statusjson["success"]:

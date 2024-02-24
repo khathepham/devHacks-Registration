@@ -17,21 +17,45 @@
         <h1 class="display-3 text-center">.devHacks Registration App</h1>
         <hr class="mb-4">
     </div>
-{#    <button type="button" class="btn btn-primary" id="liveToastBtn">Show live toast</button>#}
+    <button type="button" class="btn btn-danger" id="liveToastBtn">Kha's Testing Button</button>
     <div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3" id="toastContainer">
     </div>
 
     <div id="options" class="mb-4">
-        <div class="container-xl text-center">
+        <div class="container-xl text-center mb-2">
             <div class="btn-group" role="group" aria-label="Checkin Options">
-                <input type="radio" class="btn-check" name="checkin" id="FridayCheckin" autocomplete="off" checked>
-                <label class="btn btn-outline-primary" for="FridayCheckin">Friday Check-In</label>
+{#                <input type="radio" class="btn-check" name="checkin" id="FridayCheckin" autocomplete="off">#}
+{#                <label class="btn btn-outline-primary" for="FridayCheckin">Friday Check-In</label>#}
 
-                <input type="radio" class="btn-check" name="checkin" id="SaturdayCheckin" autocomplete="off">
+                <input type="radio" class="btn-check" name="checkin" id="SaturdayCheckin" autocomplete="off" disabled checked>
                 <label class="btn btn-outline-primary" for="SaturdayCheckin">Saturday Check-In</label>
+            </div>
+        </div>
+        <div class="container-xl text-center mb-2" id="mealOptions">
+            <div class="btn-group" role="group" aria-label="Meal Options">
+                <input type="radio" class="btn-check" name="checkinType" id="Standard" autocomplete="off" checked>
+                <label class="btn btn-outline-primary" for="Standard">Standard</label>
 
-{#                <input type="radio" class="btn-check" name="checkin" id="NoCheckin" autocomplete="off">#}
-{#                <label class="btn btn-outline-primary" for="NoCheckin">Verify</label>#}
+                <input type="radio" class="btn-check" name="checkinType" id="Lunch" autocomplete="off">
+                <label class="btn btn-outline-primary" for="Lunch">Lunch</label>
+
+                <input type="radio" class="btn-check" name="checkinType" id="Dinner" autocomplete="off">
+                <label class="btn btn-outline-primary" for="Dinner">Dinner</label>
+            </div>
+        </div>
+        <div class="container-xl text-center mb-2" id="mealGroups" hidden="hidden">
+            <div class="btn-group" role="group" aria-label="Meal Group Options">
+                <input type="checkbox" class="btn-check" name="mealGroups" id="DietaryRestrictions" autocomplete="off" checked disabled>
+                <label class="btn btn-outline-primary" for="DietaryRestrictions">Dietary Restrictions</label>
+
+                <input type="checkbox" class="btn-check" name="mealGroups" id="A" autocomplete="off">
+                <label class="btn btn-outline-primary" for="A">Group A</label>
+
+                <input type="checkbox" class="btn-check" name="mealGroups" id="B" autocomplete="off">
+                <label class="btn btn-outline-primary" for="B">Group B</label>
+
+                <input type="checkbox" class="btn-check" name="mealGroups" id="C" autocomplete="off">
+                <label class="btn btn-outline-primary" for="C">Group C</label>
             </div>
         </div>
     </div>
