@@ -26,7 +26,7 @@ def assignAttendees(member, team):
                 attendee["properties"]["Dietary Restrictions"]["multi_select"][0]["name"] != "None":
             meal_group = "DR"
         assignMealGroupAndTeam(attendee["id"], meal_group, team["team_name"])
-        print(f"Added {meal_group}, {team['team_name']} to {member}")
+        # print(f"Added {meal_group}, {team['team_name']} to {member}")
     else:
         print(f"Ticket {member} not found.")
 def assignMealGroupAndTeam(ticket_uuid, meal_group, team):
